@@ -2,23 +2,25 @@ export default {
   async fetch(request) {
     const url = new URL(request.url);
 
+    // ✅ API endpoint
     if (url.pathname === "/api/trends/all") {
-      const res = await fetch("https://www.reddit.com/r/all/hot.json?limit=10", {
-        headers: { "User-Agent": "trendstats" }
-      });
-
-      const data = await res.json();
-      const trends = data.data.children.map(p => p.data.title).slice(0, 5);
-
       return new Response(JSON.stringify({
-        success: true,
-        insight: trends.join("\n"),
-        timestamp: new Date().toISOString()
+        trends: [
+          "AI tools",
+          "ChatGPT updates",
+          "YouTube automation",
+          "Passive income",
+          "Startup ideas"
+        ]
       }), {
-        headers: { "Content-Type": "application/json" }
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
       });
     }
 
-    return new Response("API çalışıyor 🚀");
+    // ❌ diğer her şey
+    return new Response("Not found", { status: 404 });
   }
 };
