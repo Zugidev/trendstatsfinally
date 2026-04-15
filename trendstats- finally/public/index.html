@@ -2,32 +2,80 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>TrendStats.ai</title>
+  <title>Trendstats.ai</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0a0f2c, #1a1f4c);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 30px;
+      color: #a78bfa;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      color: white;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 30px;
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+  </style>
 </head>
 
-<body style="background:#0f0f1a;color:white;text-align:center;font-family:Arial">
+<body>
 
-<h1>TRENDSTATS.AI</h1>
+  <h1>TRENDSTATS.AI</h1>
 
-<button onclick="getTrends()">Trendleri Analiz Et</button>
+  <button onclick="getTrends()">Trendleri Analiz Et</button>
 
-<pre id="result">Henüz veri yok...</pre>
+  <div id="result">Henüz veri yok...</div>
 
-<script>
-async function getTrends() {
-  document.getElementById("result").innerText = "taranıyor...";
+  <script>
+    async function getTrends() {
+      const result = document.getElementById("result");
+      result.innerHTML = "Yükleniyor... ⏳";
 
-  try {
-    const res = await fetch("https://trendstats-api.muratk-gsb.workers.dev/api/trends/all");
-    const data = await res.json();
+      try {
+        const res = await fetch("https://trendstats-worker.muratk-gsb.workers.dev/api/trends/all");
 
-    document.getElementById("result").innerText = data.insight;
-  } catch (e) {
-    document.getElementById("result").innerText = "Hata 😢";
-  }
-}
-</script>
+        if (!res.ok) throw new Error("API hata verdi");
+
+        const data = await res.json();
+
+        if (!data.trends || data.trends.length === 0) {
+          result.innerHTML = "Veri bulunamadı ⚠️";
+          return;
+        }
+
+        result.innerHTML = data.trends.map(t => "🔥 " + t).join("<br>");
+
+      } catch (err) {
+        result.innerHTML = "Hata 😳<br><small>" + err.message + "</small>";
+      }
+    }
+  </script>
 
 </body>
 </html>
