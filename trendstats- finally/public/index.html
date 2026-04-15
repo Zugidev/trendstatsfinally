@@ -58,7 +58,7 @@
       result.innerHTML = "Yükleniyor... ⏳";
 
       try {
-        const res = await fetch("https://trendstats-worker.muratk-gsb.workers.dev/api/trends/all");
+        const res = await fetch("https://trendstats-ai.muratk-gsb.workers.dev/api/trends/all");
 
         if (!res.ok) throw new Error("API hata verdi");
 
