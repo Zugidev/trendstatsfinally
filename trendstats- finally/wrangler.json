@@ -1,0 +1,5 @@
+{
+  "name": "trendstats-api",
+  "main": "worker.js",
+  "compatibility_date": "2026-04-15"
+}

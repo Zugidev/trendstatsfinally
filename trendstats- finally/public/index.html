@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>TrendStats.ai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body style="background:#0f0f1a;color:white;text-align:center;font-family:Arial">
+
+<h1>TRENDSTATS.AI</h1>
+
+<button onclick="getTrends()">Trendleri Analiz Et</button>
+
+<pre id="result">Henüz veri yok...</pre>
+
+<script>
+async function getTrends() {
+  document.getElementById("result").innerText = "taranıyor...";
+
+  try {
+    const res = await fetch("https://trendstats-api.muratk-gsb.workers.dev/api/trends/all");
+    const data = await res.json();
+
+    document.getElementById("result").innerText = data.insight;
+  } catch (e) {
+    document.getElementById("result").innerText = "Hata 😢";
+  }
+}
+</script>
+
+</body>
+</html>
